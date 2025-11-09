@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Munay Social Media</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+/* ==== BASE ==== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+:root {
+  --primary: #ff00b8;
+  --secondary: #00e1ff;
+  --accent: #ffd700;
+  --dark: #000;
+  --light: #fff;
+  --gray: #ccc;
+  --light-gray: #e8e8e8;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--dark);
+  color: var(--light);
+  overflow-x: hidden;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1); /* Sutil mejora de contraste */
+}
+
+/* ==== HEADER ==== */
+header {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  padding: 15px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(15px);
+  background: rgba(0, 0, 0, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(255,255,255,0.05);
+  z-index: 1000;
+  transition: all 0.4s ease;
+}
+header.scrolled {
+  padding: 10px 50px;
+  background: rgba(0, 0, 0, 0.95);
+}
+header img {
+  height: 65px;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+header img:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+}
+nav {
+  display: flex;
+  gap: 25px;
+}
+nav a {
+  color: var(--light);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1em;
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 8px 0;
+}
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 3px;
+  left: 0; bottom: 0;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  transition: width 0.4s ease;
+}
+nav a:hover::after { width: 100%; }
+nav a:hover {
+  color: #ffb3ff;
+  text-shadow: 0 0 8px rgba(255, 0, 255, 0.7);
+}
+
+/* ==== HERO / INICIO CON IMAGEN DE FONDO ==== */
+#inicio {
+  height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: 
+    /* Imagen de fondo principal */
+    url('./img/MUNAY 5.png') center/cover no-repeat,
+    /* Gradientes para overlay */
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 184, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 225, 255, 0.3) 0%, transparent 50%);
+  position: relative; text-align: center;
+  overflow: hidden;
+}
+
+#inicio::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7); /* Overlay oscuro para mejor contraste */
+  backdrop-filter: blur(1px);
+}
+
+#inicio .contenido {
+  position: relative;
+  z-index: 2;
+  animation: fadeIn 2s ease;
+  max-width: 800px;
+  padding: 0 20px;
+}
+#inicio h1 {
+  font-size: 3.5em;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 5s infinite alternate;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+#inicio p {
+  margin-top: 15px;
+  font-size: 1.2em;
+  color: var(--light-gray);
+  margin-bottom: 30px;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+#inicio button {
+  margin-top: 30px;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: var(--light);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+#inicio button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+#inicio button:hover::before {
+  left: 100%;
+}
+#inicio button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255,255,255,0.5);
+}
+
+/* ==== TITULOS Y SECCIONES ==== */
+section {
+  padding: 100px 10%;
+  position: relative;
+  animation: fadeIn 1.5s ease;
+  scroll-margin-top: 110px;
+}
+
+/* TRANSICIÓN SUAVE ENTRE SECCIONES */
+section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+section:last-of-type::after {
+  display: none;
+}
+
+h2 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 4s infinite alternate;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+h2::after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 3px;
+  bottom: -10px;
+  left: 25%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  border-radius: 2px;
+}
+p {
+  color: var(--light-gray);
+  text-align: center;
+  line-height: 1.7em;
+}
+
+/* ==== SERVICIOS ==== */
+#servicios {
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(255, 0, 184, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 225, 255, 0.1) 0%, transparent 40%),
+    linear-gradient(45deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  position: relative;
+}
+
+.servicios-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.card {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 40px 25px;
+  text-align: center;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 25px rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.card:hover::before {
+  transform: scaleX(1);
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(255,255,255,0.15);
+  background: linear-gradient(145deg, rgba(255,0,184,0.15), rgba(0,225,255,0.15), rgba(255,215,0,0.15));
+}
+.card .icon {
+  font-size: 2.8em;
+  margin-bottom: 20px;
+  animation: glowPulse 3s infinite;
+}
+.card h3 {
+  margin-bottom: 15px;
+  font-size: 1.4em;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.card p {
+  color: var(--light-gray);
+  font-size: 1.05em;
+  line-height: 1.6;
+}
+
+/* ==== TESTIMONIOS (Reemplaza Portafolio) ==== */
+#testimonios {
+  background: 
+    radial-gradient(ellipse at 30% 50%, rgba(255, 0, 184, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(0, 225, 255, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
+  position: relative;
+}
+
+.testimonial-carousel {
+  display: flex;
+  overflow-x: auto; /* Permite scroll horizontal */
+  gap: 30px;
+  padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  position: relative;
+  z-index: 2;
+}
+
+.testimonial-carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.testimonial-card {
+  flex: 0 0 85%; /* 85% para móvil, ajustaremos para desktop */
+  scroll-snap-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto; /* Centrar para el efecto visual, aunque el flex-item ya tiene un tamaño fijo */
+  transition: all 0.4s ease;
+  box-shadow: 0 0 25px rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card::before {
+  content: '\f10d'; /* Icono de comillas de Font Awesome */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  font-size: 4em;
+  color: rgba(255, 255, 255, 0.1);
+  line-height: 1;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255,0,184,0.3);
+}
+
+.testimonial-card p {
+  font-style: italic;
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.client-info {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.client-info h4 {
+  font-size: 1.2em;
+  color: var(--secondary);
+  margin-bottom: 5px;
+}
+
+.client-info span {
+  font-size: 0.9em;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+
+/* ==== COMBOS ==== */
+#combos {
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(255, 0, 184, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(0, 225, 255, 0.1) 0%, transparent 50%),
+    linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+  position: relative;
+}
+
+.combo-cta-card {
+  z-index: 2;
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 50px 30px;
+  box-shadow: 
+    0 0 40px rgba(255,0,184,0.25), 
+    0 0 20px rgba(0,225,255,0.25),
+    inset 0 0 20px rgba(255,255,255,0.05);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+}
+.combo-cta-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  transform: rotate(30deg);
+  transition: all 0.5s ease;
+}
+.combo-cta-card:hover::before {
+  transform: rotate(0deg);
+}
+.combo-cta-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 0 55px rgba(255,0,184,0.35), 
+    0 0 30px rgba(0,225,255,0.35),
+    inset 0 0 30px rgba(255,255,255,0.1);
+}
+.combo-cta-card h3 {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.combo-cta-card p {
+  color: var(--light-gray);
+  margin-bottom: 25px;
+  font-size: 1.1em;
+}
+.combo-cta-card button {
+  padding: 15px 35px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  color: var(--light);
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.combo-cta-card button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+.combo-cta-card button:hover::before {
+  width: 100%;
+}
+.combo-cta-card button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255,255,255,0.5);
+}
+
+/* ==== CONTACTO ==== */
+#contacto {
+  background: 
+    /* Imagen de fondo para contacto */
+    url('./img/CONTACTO.png') center/cover no-repeat,
+    /* Gradientes para overlay */
+    radial-gradient(circle at 80% 20%, rgba(255, 0, 184, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(0, 225, 255, 0.2) 0%, transparent 40%);
+  color: var(--light);
+  overflow: hidden;
+  position: relative;
+}
+
+#contacto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7); /* Overlay oscuro para contraste */
+  backdrop-filter: blur(1px);
+}
+
+#contacto > * {
+  position: relative;
+  z-index: 1;
+}
+.contacto-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 35px;
+  margin-top: 40px;
+}
+.contact-card {
+  background: rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 25px;
+  width: 300px;
+  transition: all 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+}
+.contact-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+.contact-card:hover::before {
+  transform: translateY(0);
+}
+.contact-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255,255,255,0.15);
+  box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+}
+.contact-card .icon i {
+  font-size: 60px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+  animation: glowPulse 2.8s infinite;
+}
+.contact-card:hover .icon i { transform: scale(1.2); }
+
+.whatsapp .icon i { color: #25D366; }
+.instagram .icon i { color: #E4405F; }
+.facebook .icon i { color: #1877F2; }
+.tiktok .icon i { color: #000; }
+
+.contact-card h3 {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  color: var(--light);
+}
+.contact-card p {
+  color: var(--light-gray);
+  margin-bottom: 15px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: var(--light);
+  color: var(--dark);
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  font-size: 1.05em;
+}
+.contact-card:hover .btn {
+  background: var(--primary);
+  color: var(--light);
+}
+
+/* ==== ANIMACIONES ==== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+@keyframes glowPulse {
+  0%,100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); }
+  50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.4)); }
+}
+
+/* ==== RESPONSIVO MEJORADO ==== */
+@media (max-width: 768px) {
+  /* Header */
+  header { 
+    padding: 12px 20px; 
+    flex-direction: column;
+    gap: 15px;
+  }
+  header img {
+    height: 70px;
+  }
+  nav {
+    gap: 15px;
+  }
+  nav a {
+    font-size: 1em;
+  }
+  
+  /* Sección Inicio */
+  #inicio {
+    height: 100vh;
+    background: 
+      url('./img/MUNAY 5.png') center/cover no-repeat,
+      radial-gradient(circle at 20% 80%, rgba(255, 0, 184, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(0, 225, 255, 0.3) 0%, transparent 50%);
+  }
+  
+  #inicio h1 { 
+    font-size: 2.2em; 
+    margin-top: 20px;
+  }
+  
+  #inicio p {
+    font-size: 1em;
+    padding: 0 10px;
+  }
+  
+  /* Secciones generales */
+  section {
+    padding: 80px 5%;
+    scroll-margin-top: 140px;
+  }
+  
+  h2 {
+    font-size: 2em;
+  }
+  
+  /* Servicios */
+  .card { 
+    padding: 30px 15px; 
+  }
+  
+  /* Combos */
+  .combo-cta-card { 
+    padding: 40px 20px; 
+    width: 95%;
+  }
+  
+  /* Contacto */
+  #contacto {
+    background: 
+      url('./img/CONTACTO.png') center/cover no-repeat,
+      radial-gradient(circle at 80% 20%, rgba(255, 0, 184, 0.2) 0%, transparent 40%),
+      radial-gradient(circle at 20% 80%, rgba(0, 225, 255, 0.2) 0%, transparent 40%);
+  }
+  
+  .contacto-grid {
+    gap: 20px;
+  }
+  
+  .contact-card {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  /* Testimonios */
+  .testimonial-card {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Ajustes para pantallas muy pequeñas */
+  #inicio h1 { 
+    font-size: 1.8em; 
+  }
+  
+  #inicio p {
+    font-size: 0.9em;
+  }
+  
+  h2 {
+    font-size: 1.7em;
+  }
+  
+  section {
+    padding: 60px 5%;
+  }
+  
+  .servicios-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .contacto-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Para dispositivos con orientación horizontal */
+@media (max-height: 600px) and (orientation: landscape) {
+  #inicio {
+    height: auto;
+    min-height: 100vh;
+    padding: 100px 0;
+  }
+  
+  #inicio .contenido {
+    margin-top: 50px;
+  }
+}
+
+/* ==== FOOTER MEJORADO ==== */
+footer {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 60px 10% 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-logo {
+  height: 80px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
+}
+
+.footer-brand p {
+  text-align: left;
+  color: #bbb;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+}
+
+.social-link:hover::before {
+  opacity: 1;
+}
+
+.social-link i {
+  position: relative;
+  z-index: 1;
+  font-size: 1.2em;
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+}
+
+.footer-links h3,
+.footer-services h3,
+.footer-contact h3 {
+  color: #fff;
+  margin-bottom: 25px;
+  font-size: 1.3em;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-links h3::after,
+.footer-services h3::after,
+.footer-contact h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.footer-links ul,
+.footer-services ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li,
+.footer-services li {
+  margin-bottom: 12px;
+}
+
+.footer-links a,
+.footer-services a {
+  color: #bbb;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-links a::before,
+.footer-services a::before {
+  content: '▸';
+  color: var(--secondary);
+  transition: transform 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-services a:hover {
+  color: #fff;
+  transform: translateX(5px);
+}
+
+.footer-links a:hover::before,
+.footer-services a:hover::before {
+  transform: translateX(3px);
+  color: var(--primary);
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #bbb;
+}
+
+.contact-item i {
+  color: var(--secondary);
+  font-size: 1.1em;
+  margin-top: 2px;
+  min-width: 20px;
+}
+
+.contact-item a {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+  color: var(--secondary);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.copyright {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.footer-legal {
+  display: flex;
+  gap: 25px;
+}
+
+.footer-legal a {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: color 0.3s ease;
+}
+
+.footer-legal a:hover {
+  color: var(--secondary);
+}
+
+.back-to-top {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-brand {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .footer-brand p {
+    text-align: center;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footer-legal {
+    justify-content: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="./img/MUNAY BLANCO PNG.png" alt="Munay Social Media Logo">
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <!-- <a href="#testimonios">Testimonios</a> -->
+    <a href="#combos">Combos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<section id="inicio">
+  <div class="contenido">
+    <h1>Bienvenido a Munay Social Media</h1>
+    <p>Transformamos tu presencia digital con **creatividad, estrategia y amor por el detalle**.</p>
+  </div>
+</section>
+
+<section id="servicios">
+  <h2>Nuestros Servicios Esenciales ✨</h2>
+  <div class="servicios-grid">
+    <div class="card"><div class="icon"><i class="fa-solid fa-rocket"></i></div><h3>Manejo de Redes Sociales</h3><p>Impulsamos tu marca con estrategias creativas y conexión real.</p></div>
+    <div class="card"><div class="icon"><i class="fa-solid fa-code"></i></div><h3>Diseño y Desarrollo Web</h3><p>Páginas web modernas, rápidas y adaptadas a tu identidad.</p></div>
+    <div class="card"><div class="icon"><i class="fa-solid fa-camera"></i></div><h3>Fotografía y Contenido Visual</h3><p>Capturamos la esencia de tu marca con imágenes que inspiran.</p></div>
+    <div class="card"><div class="icon"><i class="fa-solid fa-palette"></i></div><h3>Diseño Gráfico y Branding</h3><p>Diseñamos tu identidad visual con amor y equilibrio.</p></div>
+  </div>
+</section>
+<!-- 
+<section id="testimonios">
+  <h2>Clientes Felices, Resultados Reales </h2>
+  <p style="margin-bottom: 40px;">La mejor prueba de nuestro trabajo es el crecimiento de quienes confían en Munay.</p>
+  <div class="testimonial-carousel">
+    <div class="testimonial-card">
+      <p>"El equipo de Munay elevó nuestro Instagram a un nuevo nivel. Las ventas se duplicaron en 3 meses. ¡Recomendados 100%!"</p>
+      <div class="client-info">
+        <h4>Jose Flores</h4>
+        <span>Fundadora, Tienda de Moda Vint.</span>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p>"Necesitábamos una web moderna y rápida. Munay nos entregó un sitio espectacular, optimizado y con un diseño que amamos."</p>
+      <div class="client-info">
+        <h4>Carlos Herrera</h4>
+        <span>Director de Marketing, TechSoluciones.</span>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p>"Su trabajo de branding capturó perfectamente la esencia de nuestro restaurante. ¡Ahora tenemos una identidad inolvidable!"</p>
+      <div class="client-info">
+        <h4>Elena Guzmán</h4>
+        <span>Gerente, El Fogón Gourmet.</span>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section id="combos">
+  <h2>Combos Hechos con Amor 📦</h2>
+  <div class="combo-cta-card">
+    <h3>¿Listo para despegar?</h3>
+    <p>Explora todos nuestros planes de Social Media, Diseño Web y Branding. Tenemos el **combo perfecto** para tu crecimiento digital.</p>
+    <button onclick="window.location.href='combos.html'">👉 Ver planes y precios</button>
+  </div>
+</section>
+
+<section id="contacto">
+  <h2>Conéctate con Nosotros 💬</h2>
+  <p class="contacto-text">Estamos listos para ayudarte a hacer crecer tu marca y llevar tu presencia digital al siguiente nivel.</p>
+
+  <div class="contacto-grid">
+    <div class="contact-card whatsapp" onclick="window.open('https://wa.me/593968548009','_blank')">
+      <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+      <h3>WhatsApp</h3>
+      <p>Conversa directamente con nuestro equipo y resuelve tus dudas al instante.</p>
+      <span class="btn">Abrir Chat</span>
+    </div>
+
+    <div class="contact-card instagram" onclick="window.open('https://www.instagram.com/munay_social_media?igsh=MW9oMW02M3Y1NXR4MA%3D%3D&utm_source=qr','_blank')">
+      <div class="icon"><i class="fa-brands fa-instagram"></i></div>
+      <h3>Instagram</h3>
+      <p>Sigue nuestro trabajo, proyectos y últimas novedades en redes sociales.</p>
+      <span class="btn">Ir a Instagram</span>
+    </div>
+
+    <div class="contact-card facebook" onclick="window.open('https://www.facebook.com/share/1RtKyvV9vd/?mibextid=wwXIfr','_blank')">
+      <div class="icon"><i class="fa-brands fa-facebook-f"></i></div>
+      <h3>Facebook</h3>
+      <p>Forma parte de nuestra comunidad y descubre contenido exclusivo.</p>
+      <span class="btn">Ir a Facebook</span>
+    </div>
+    <div class="contact-card tiktok" onclick="window.open('https://www.tiktok.com/@munay.social.medi?_r=1&_t=ZM-91BKcjH4G0e','_blank')">
+  <div class="icon"><i class="fa-brands fa-tiktok"></i></div>
+  <h3>TikTok</h3>
+  <p>Disfruta de tips, ideas creativas y contenido que te inspira a crecer.</p>
+  <span class="btn">Ir a TikTok</span>
+</div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <img src="./img/MUNAY BLANCO PNG.png" alt="Munay Social Media" class="footer-logo">
+      <p>Transformamos ideas en experiencias digitales memorables. Creamos conexiones auténticas entre marcas y audiencias.</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1RtKyvV9vd/?mibextid=wwXIfr" class="social-link" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/munay_social_media?igsh=MW9oMW02M3Y1NXR4MA%3D%3D&utm_source=qr" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@munay.social.medi?_r=1&_t=ZM-91BKcjH4G0e" class="social-link" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://wa.me/593968548009" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    
+    <div class="footer-links">
+      <h3>Enlaces Rápidos</h3>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <!-- <li><a href="#testimonios">Testimonios</a></li> -->
+        <li><a href="#combos">Combos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-services">
+      <h3>Nuestros Servicios</h3>
+      <ul>
+        <li><a href="#servicios">Social Media</a></li>
+        <li><a href="#servicios">Diseño Web</a></li>
+        <li><a href="#servicios">Branding</a></li>
+        <li><a href="#servicios">Fotografía</a></li>
+        <li><a href="#servicios">Marketing Digital</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-contact">
+      <h3>Contacto</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Quito, Ecuador</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <a href="tel:+593968548009">+593 96 854 8009</a>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:munaysocialmedia@gmail.com">munaysocialmedia@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-clock"></i>
+          <span>Lun - Dom: 9:00 - 18:00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <div class="copyright">
+      © 2025 Munay Social Media — Todos los derechos reservados.
+    </div>
+    <div class="footer-legal">
+      <a href="#">Política de Privacidad</a>
+      <a href="#">Términos de Servicio</a>
+      <a href="#">Aviso Legal</a>
+    </div>
+    <button class="back-to-top" onclick="scrollToTop()">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+  </div>
+</footer>
+
+<script>
+// Animación de aparición suave al hacer scroll
+const elements = document.querySelectorAll("section");
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = "fadeIn 1.5s ease forwards";
+    }
+  });
+});
+elements.forEach(el => observer.observe(el));
+
+// Header que cambia al hacer scroll
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('header');
+  if (window.scrollY > 50) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+
+// Función para scroll al inicio
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+</script>
+
+</body>
+</html>
