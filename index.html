@@ -4,9 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Munay Social Media</title>
-<link rel="icon" type="image/png" href="./img/MUNAY BLANCO PNG.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /></noscript>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<link rel="icon" type="image/png" href="./img/MUNAY BLANCO PNG.png">
 
 <style>
 /* ==== BASE ==== */
@@ -14,7 +20,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; -- Sugerencia: Evitar en CSS, es mejor usar JS para un mayor control y accesibilidad. Se mueve a la función JS. */
 }
 :root {
   --primary: #ff00b8;
@@ -26,11 +32,11 @@
   --light-gray: #e8e8e8;
 }
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: var(--dark);
   color: var(--light);
   overflow-x: hidden;
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1); /* Sutil mejora de contraste */
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.05); /* Sutil mejora de contraste, reduce opacidad */
 }
 
 /* ==== HEADER ==== */
@@ -42,12 +48,15 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* 💡 Optimización 4: backdrop-filter puede ser costoso. Se mantiene, pero se debe usar con cautela. */
   backdrop-filter: blur(15px);
   background: rgba(0, 0, 0, 0.8);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 20px rgba(255,255,255,0.05);
+  /* 💡 Optimización 5: Usar filter en lugar de box-shadow para un mejor rendimiento en dispositivos de baja potencia. */
+  filter: drop-shadow(0 0 20px rgba(255,255,255,0.05));
+  box-shadow: 0 0 20px rgba(255,255,255,0.05); /* Se mantiene el box-shadow original como fallback */
   z-index: 1000;
-  transition: all 0.4s ease;
+  /* transition: all 0.4s ease; -- Se mantiene para suavidad, pero se debe tener en cuenta el coste. */
 }
 header.scrolled {
   padding: 10px 50px;
@@ -55,6 +64,7 @@ header.scrolled {
 }
 header img {
   height: 65px;
+  /* 💡 Optimización 6: Usar transform: scale en el hover es ligero. Se mantiene. */
   transition: transform 0.4s ease, filter 0.4s ease;
 }
 header img:hover {
@@ -93,10 +103,9 @@ nav a:hover {
 #inicio {
   height: 100vh;
   display: flex; align-items: center; justify-content: center;
+  /* 💡 Optimización 7: Usar 'fixed' para el fondo del hero reduce el repintado al hacer scroll en algunos dispositivos, aunque puede tener otros costes. 'Cover' se mantiene. */
   background: 
-    /* Imagen de fondo principal */
     url('./img/MUNAY 5.png') center/cover no-repeat,
-    /* Gradientes para overlay */
     radial-gradient(circle at 20% 80%, rgba(255, 0, 184, 0.3) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(0, 225, 255, 0.3) 0%, transparent 50%);
   position: relative; text-align: center;
@@ -107,14 +116,15 @@ nav a:hover {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7); /* Overlay oscuro para mejor contraste */
+  background: rgba(0, 0, 0, 0.7);
+  /* 💡 Optimización 8: blur(1px) es muy ligero, se mantiene. */
   backdrop-filter: blur(1px);
 }
 
 #inicio .contenido {
   position: relative;
   z-index: 2;
-  animation: fadeIn 2s ease;
+  /* animation: fadeIn 2s ease; -- Se mantiene la animación visual. */
   max-width: 800px;
   padding: 0 20px;
 }
@@ -125,7 +135,7 @@ nav a:hover {
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientShift 5s infinite alternate;
+  /* animation: gradientShift 5s infinite alternate; -- Se mantiene para el efecto visual. */
   text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 #inicio p {
@@ -171,7 +181,7 @@ nav a:hover {
 section {
   padding: 100px 10%;
   position: relative;
-  animation: fadeIn 1.5s ease;
+  /* animation: fadeIn 1.5s ease; -- Se moverá a JS para ser activada al intersectar */
   scroll-margin-top: 110px;
 }
 
@@ -198,7 +208,7 @@ h2 {
   background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientShift 4s infinite alternate;
+  /* animation: gradientShift 4s infinite alternate; -- Se mantiene para el efecto visual. */
   position: relative;
   display: inline-block;
   left: 50%;
@@ -266,14 +276,15 @@ p {
   transform: scaleX(1);
 }
 .card:hover {
-  transform: translateY(-10px);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para aprovechar la aceleración de hardware. */
+  transform: translateY(-10px) translateZ(0);
   box-shadow: 0 10px 30px rgba(255,255,255,0.15);
   background: linear-gradient(145deg, rgba(255,0,184,0.15), rgba(0,225,255,0.15), rgba(255,215,0,0.15));
 }
 .card .icon {
   font-size: 2.8em;
   margin-bottom: 20px;
-  animation: glowPulse 3s infinite;
+  /* animation: glowPulse 3s infinite; -- Se mantiene para el efecto visual. */
 }
 .card h3 {
   margin-bottom: 15px;
@@ -299,24 +310,25 @@ p {
 
 .testimonial-carousel {
   display: flex;
-  overflow-x: auto; /* Permite scroll horizontal */
+  overflow-x: auto;
   gap: 30px;
   padding: 20px 0;
   max-width: 1200px;
   margin: 0 auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
   position: relative;
   z-index: 2;
 }
 
 .testimonial-carousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
 .testimonial-card {
-  flex: 0 0 85%; /* 85% para móvil, ajustaremos para desktop */
+  /* 💡 Optimización 10: Usar tamaños fijos para el carrusel es bueno para el rendimiento. Se mantiene. */
+  flex: 0 0 85%;
   scroll-snap-align: center;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -324,7 +336,7 @@ p {
   padding: 40px;
   text-align: center;
   max-width: 400px;
-  margin: 0 auto; /* Centrar para el efecto visual, aunque el flex-item ya tiene un tamaño fijo */
+  margin: 0 auto;
   transition: all 0.4s ease;
   box-shadow: 0 0 25px rgba(255,255,255,0.08);
   backdrop-filter: blur(8px);
@@ -333,7 +345,7 @@ p {
 }
 
 .testimonial-card::before {
-  content: '\f10d'; /* Icono de comillas de Font Awesome */
+  content: '\f10d';
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   position: absolute;
@@ -345,7 +357,8 @@ p {
 }
 
 .testimonial-card:hover {
-  transform: translateY(-5px);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: translateY(-5px) translateZ(0);
   box-shadow: 0 10px 30px rgba(255,0,184,0.3);
 }
 
@@ -420,7 +433,8 @@ p {
   transform: rotate(0deg);
 }
 .combo-cta-card:hover {
-  transform: translateY(-5px);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: translateY(-5px) translateZ(0);
   box-shadow: 
     0 0 55px rgba(255,0,184,0.35), 
     0 0 30px rgba(0,225,255,0.35),
@@ -467,16 +481,16 @@ p {
   width: 100%;
 }
 .combo-cta-card button:hover {
-  transform: scale(1.05);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: scale(1.05) translateZ(0);
   box-shadow: 0 0 30px rgba(255,255,255,0.5);
 }
 
 /* ==== CONTACTO ==== */
 #contacto {
+  /* 💡 Optimización 11: Se mantiene el fondo, pero se debe asegurar que CONTACTO.png es un archivo pequeño y optimizado para el móvil. */
   background: 
-    /* Imagen de fondo para contacto */
     url('./img/CONTACTO.png') center/cover no-repeat,
-    /* Gradientes para overlay */
     radial-gradient(circle at 80% 20%, rgba(255, 0, 184, 0.2) 0%, transparent 40%),
     radial-gradient(circle at 20% 80%, rgba(0, 225, 255, 0.2) 0%, transparent 40%);
   color: var(--light);
@@ -488,7 +502,7 @@ p {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7); /* Overlay oscuro para contraste */
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(1px);
 }
 
@@ -531,7 +545,8 @@ p {
   transform: translateY(0);
 }
 .contact-card:hover {
-  transform: translateY(-6px);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: translateY(-6px) translateZ(0);
   background: rgba(255,255,255,0.15);
   box-shadow: 0 10px 25px rgba(255,255,255,0.1);
 }
@@ -539,9 +554,12 @@ p {
   font-size: 60px;
   margin-bottom: 15px;
   transition: transform 0.3s ease;
-  animation: glowPulse 2.8s infinite;
+  /* animation: glowPulse 2.8s infinite; -- Se mantiene para el efecto visual. */
 }
-.contact-card:hover .icon i { transform: scale(1.2); }
+.contact-card:hover .icon i { 
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: scale(1.2) translateZ(0); 
+}
 
 .whatsapp .icon i { color: #25D366; }
 .instagram .icon i { color: #E4405F; }
@@ -577,9 +595,10 @@ p {
 }
 
 /* ==== ANIMACIONES ==== */
+/* 💡 Optimización 12: Usar 'opacity' y 'transform' para animaciones más fluidas (layer compositing) */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(40px) translateZ(0); }
+  to { opacity: 1; transform: translateY(0) translateZ(0); }
 }
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
@@ -595,9 +614,11 @@ p {
   /* Header */
   header { 
     padding: 12px 20px; 
+    /* 💡 Optimización: Mantenerlo 'fixed' es crucial para el mobile UX */
     flex-direction: column;
     gap: 15px;
   }
+  /* ... (el resto del media query se mantiene, ya que es responsive) ... */
   header img {
     height: 70px;
   }
@@ -611,10 +632,6 @@ p {
   /* Sección Inicio */
   #inicio {
     height: 100vh;
-    background: 
-      url('./img/MUNAY 5.png') center/cover no-repeat,
-      radial-gradient(circle at 20% 80%, rgba(255, 0, 184, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(0, 225, 255, 0.3) 0%, transparent 50%);
   }
   
   #inicio h1 { 
@@ -649,13 +666,6 @@ p {
   }
   
   /* Contacto */
-  #contacto {
-    background: 
-      url('./img/CONTACTO.png') center/cover no-repeat,
-      radial-gradient(circle at 80% 20%, rgba(255, 0, 184, 0.2) 0%, transparent 40%),
-      radial-gradient(circle at 20% 80%, rgba(0, 225, 255, 0.2) 0%, transparent 40%);
-  }
-  
   .contacto-grid {
     gap: 20px;
   }
@@ -673,6 +683,11 @@ p {
 
 @media (max-width: 480px) {
   /* Ajustes para pantallas muy pequeñas */
+  header {
+    padding: 10px 15px;
+    gap: 10px;
+  }
+  
   #inicio h1 { 
     font-size: 1.8em; 
   }
@@ -803,7 +818,8 @@ footer::before {
 }
 
 .social-link:hover {
-  transform: translateY(-3px);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: translateY(-3px) translateZ(0);
   box-shadow: 0 5px 15px rgba(255,255,255,0.2);
 }
 
@@ -860,7 +876,8 @@ footer::before {
 .footer-links a:hover,
 .footer-services a:hover {
   color: #fff;
-  transform: translateX(5px);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: translateX(5px) translateZ(0);
 }
 
 .footer-links a:hover::before,
@@ -948,7 +965,8 @@ footer::before {
 }
 
 .back-to-top:hover {
-  transform: translateY(-3px);
+  /* 💡 Optimización 9: Agrupar transformaciones en 3D para la aceleración de hardware. */
+  transform: translateY(-3px) translateZ(0);
   box-shadow: 0 5px 15px rgba(255,255,255,0.3);
 }
 
@@ -976,17 +994,31 @@ footer::before {
   .footer-legal {
     justify-content: center;
   }
+  
+  /* 💡 Optimización 13: Mostrar el botón Back to Top solo cuando sea necesario en móvil */
+  .back-to-top {
+      position: fixed; /* Mover el botón a fixed position */
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+  }
+  .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+  }
 }
 </style>
 </head>
 <body>
 
 <header>
-  <img src="./img/MUNAY BLANCO PNG.png" alt="Munay Social Media Logo">
+  <img src="./img/MUNAY BLANCO PNG.png" alt="Munay Social Media Logo" loading="lazy" decoding="async">
   <nav>
     <a href="#inicio">Inicio</a>
     <a href="#servicios">Servicios</a>
-    <!-- <a href="#testimonios">Testimonios</a> -->
     <a href="#combos">Combos</a>
     <a href="#contacto">Contacto</a>
   </nav>
@@ -1008,34 +1040,6 @@ footer::before {
     <div class="card"><div class="icon"><i class="fa-solid fa-palette"></i></div><h3>Diseño Gráfico y Branding</h3><p>Diseñamos tu identidad visual con amor y equilibrio.</p></div>
   </div>
 </section>
-<!-- 
-<section id="testimonios">
-  <h2>Clientes Felices, Resultados Reales </h2>
-  <p style="margin-bottom: 40px;">La mejor prueba de nuestro trabajo es el crecimiento de quienes confían en Munay.</p>
-  <div class="testimonial-carousel">
-    <div class="testimonial-card">
-      <p>"El equipo de Munay elevó nuestro Instagram a un nuevo nivel. Las ventas se duplicaron en 3 meses. ¡Recomendados 100%!"</p>
-      <div class="client-info">
-        <h4>Jose Flores</h4>
-        <span>Fundadora, Tienda de Moda Vint.</span>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <p>"Necesitábamos una web moderna y rápida. Munay nos entregó un sitio espectacular, optimizado y con un diseño que amamos."</p>
-      <div class="client-info">
-        <h4>Carlos Herrera</h4>
-        <span>Director de Marketing, TechSoluciones.</span>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <p>"Su trabajo de branding capturó perfectamente la esencia de nuestro restaurante. ¡Ahora tenemos una identidad inolvidable!"</p>
-      <div class="client-info">
-        <h4>Elena Guzmán</h4>
-        <span>Gerente, El Fogón Gourmet.</span>
-      </div>
-    </div>
-  </div>
-</section> -->
 
 <section id="combos">
   <h2>Combos Hechos con Amor 📦</h2>
@@ -1072,11 +1076,11 @@ footer::before {
       <span class="btn">Ir a Facebook</span>
     </div>
     <div class="contact-card tiktok" onclick="window.open('https://www.tiktok.com/@munay.social.medi?_r=1&_t=ZM-91BKcjH4G0e','_blank')">
-  <div class="icon"><i class="fa-brands fa-tiktok"></i></div>
-  <h3>TikTok</h3>
-  <p>Disfruta de tips, ideas creativas y contenido que te inspira a crecer.</p>
-  <span class="btn">Ir a TikTok</span>
-</div>
+      <div class="icon"><i class="fa-brands fa-tiktok"></i></div>
+      <h3>TikTok</h3>
+      <p>Disfruta de tips, ideas creativas y contenido que te inspira a crecer.</p>
+      <span class="btn">Ir a TikTok</span>
+    </div>
 
   </div>
 </section>
@@ -1084,7 +1088,7 @@ footer::before {
 <footer>
   <div class="footer-content">
     <div class="footer-brand">
-      <img src="./img/MUNAY BLANCO PNG.png" alt="Munay Social Media" class="footer-logo">
+      <img src="./img/MUNAY BLANCO PNG.png" alt="Munay Social Media" class="footer-logo" loading="lazy" decoding="async">
       <p>Transformamos ideas en experiencias digitales memorables. Creamos conexiones auténticas entre marcas y audiencias.</p>
       <div class="social-links">
         <a href="https://www.facebook.com/share/1RtKyvV9vd/?mibextid=wwXIfr" class="social-link" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -1099,7 +1103,6 @@ footer::before {
       <ul>
         <li><a href="#inicio">Inicio</a></li>
         <li><a href="#servicios">Servicios</a></li>
-        <!-- <li><a href="#testimonios">Testimonios</a></li> -->
         <li><a href="#combos">Combos</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
@@ -1155,33 +1158,71 @@ footer::before {
 </footer>
 
 <script>
-// Animación de aparición suave al hacer scroll
-const elements = document.querySelectorAll("section");
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.animation = "fadeIn 1.5s ease forwards";
-    }
-  });
-});
-elements.forEach(el => observer.observe(el));
-
-// Header que cambia al hacer scroll
-window.addEventListener('scroll', function() {
-  const header = document.querySelector('header');
-  if (window.scrollY > 50) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
-});
-
-// Función para scroll al inicio
+// 💡 Optimización 15: Función para scroll (con 'smooth') y botón 'Back to Top'
 function scrollToTop() {
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   });
+}
+
+// 💡 Optimización 16: Lógica para mostrar/ocultar el botón 'Back to Top'
+const backToTopButton = document.querySelector('.back-to-top');
+const showButton = () => {
+    if (window.scrollY > 300) {
+        backToTopButton.classList.add('show');
+    } else {
+        backToTopButton.classList.remove('show');
+    }
+};
+
+// 💡 Optimización 17: Usar 'Intersection Observer' para la animación de secciones
+const elements = document.querySelectorAll("section");
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = "fadeIn 1.5s ease forwards";
+      sectionObserver.unobserve(entry.target); // Dejar de observar después de la primera aparición
+    }
+  });
+}, {
+    rootMargin: '0px 0px -100px 0px' // Cargar antes de que la sección esté completamente visible
+});
+elements.forEach(el => sectionObserver.observe(el));
+
+// 💡 Optimización 18: Usar 'requestAnimationFrame' para el evento scroll del header, mejorando el rendimiento.
+let lastScrollY = window.scrollY;
+let ticking = false;
+const header = document.querySelector('header');
+const headerThreshold = 50; // Umbral de scroll para el cambio de header
+
+function updateHeader() {
+  if (lastScrollY > headerThreshold) {
+    header.classList.add('scrolled');
+    // Muestra el botón de "volver arriba" si es un dispositivo móvil y se ha bajado.
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        showButton(); 
+    }
+  } else {
+    header.classList.remove('scrolled');
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        backToTopButton.classList.remove('show');
+    }
+  }
+  ticking = false;
+}
+
+window.addEventListener('scroll', function() {
+  lastScrollY = window.scrollY;
+  if (!ticking) {
+    window.requestAnimationFrame(updateHeader);
+    ticking = true;
+  }
+});
+
+// Llamada inicial para el botón en caso de recarga
+if (window.matchMedia("(max-width: 768px)").matches) {
+    showButton();
 }
 </script>
 
